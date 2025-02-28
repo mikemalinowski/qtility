@@ -1,35 +1,28 @@
+"""
 # qtility
 
 ## Overview
 PySide (a python wrapper around the Qt framework) is a brilliant libary which
-allows for the development of rich user interfaces. 
+allows for the development of rich user interfaces.
 
-However, there are a lot of common pieces of functionality that is needed 
-reqularly which takes a fair amount of code to achieve. `qtility` exposes 
+However, there are a lot of common pieces of functionality that is needed
+reqularly which takes a fair amount of code to achieve. `qtility` exposes
 a series of functions which minimises code replication between qt projects.
 
 Examples of these are being able to blinding resolve widgets from values and values
 from widgets (a mechanism which is great for building dynamic ui's to represent
-data). Other examples are fast paths to user interaction, emptying layouts and 
-loading in ui files. 
+data). Other examples are fast paths to user interaction, emptying layouts and
+loading in ui files.
 
 ## Installation
 
 You can either clone or download this github repo, or alternatively you can install this via pip:
 
-```
 pip install qtility
-```
-
-## Development Status
-
-This is currently in development but is actively used. It will reach 1.x status
-within the next couple of months after further testing.
-
 ## Getting Started Quick
 
 Here is an example of a small application which makes use of the qtility
-library to remove some complexity from our code. 
+library to remove some complexity from our code.
 
 ```python
 import qtility
@@ -105,7 +98,7 @@ if __name__ == "__main__":
     app.exec_()
 
 ```
-In this example we're using `qtility` which is a dynamic property which will 
+In this example we're using `qtility` which is a dynamic property which will
 automatically resolve based on whether `PySide6` or `PySide2` is available.
 
 This ensures that `qtility` supports being used in qapplications which are designed
@@ -132,6 +125,36 @@ import qtility
 
 qtility.app.get()
 ```
+"""
+__version__ = "0.1.1"
 
+# -- "x" is the variable we use for "cross environment" and is
+# -- the accessor for either two or six without the user caring
+_resolved = False
 
+# -- We priortise PySide6 over PySide2
+if not _resolved:
+    try:
+        import PySide6
+        from .six import *
 
+        _resolved = True
+    except:
+        import traceback
+        traceback.print_exc()
+        pass
+
+# -- If PySide6 is not available then we fall back to
+# -- PySide2
+if not _resolved:
+    try:
+        import PySide2
+        from .two import *
+        _resolved = True
+    except:
+        pass
+
+# -- If we could not find any supported qt version we
+# -- raise an exception
+if not _resolved:
+    raise Exception("Cannot import qutils into an environment where no supported PySide version is available")
