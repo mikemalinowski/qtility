@@ -68,7 +68,7 @@ def _3dsmax():
 # noinspection PyUnresolvedReferences,PyPep8Naming
 def _maya():
     from maya import OpenMayaUI as omui
-    from shiboken6 import wrapInstance
+    from shiboken2 import wrapInstance
     return wrapInstance(int(omui.MQtUtil.mainWindow()), QtWidgets.QWidget)
 
 
