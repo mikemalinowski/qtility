@@ -132,7 +132,7 @@ def _icon(label, icon_paths, icon_map=None):
     if icon_map and label in icon_map:
         return icon_map[label]
 
-    for icon_path in icon_paths:
+    for icon_path in icon_paths or list():
 
         if not icon_path:
             continue
