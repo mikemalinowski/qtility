@@ -126,11 +126,13 @@ import qtility
 qtility.app.get()
 ```
 """
-__version__ = "1.0.2"
+import traceback
+__version__ = "1.0.3"
 
 # -- "x" is the variable we use for "cross environment" and is
 # -- the accessor for either two or six without the user caring
 _resolved = False
+tracebacks = []
 
 # -- We priortise PySide6 over PySide2
 if not _resolved:
@@ -140,9 +142,7 @@ if not _resolved:
 
         _resolved = True
     except:
-        import traceback
-        traceback.print_exc()
-        pass
+        tracebacks.append(traceback.format_exc())
 
 # -- If PySide6 is not available then we fall back to
 # -- PySide2
@@ -152,9 +152,11 @@ if not _resolved:
         from .two import *
         _resolved = True
     except:
-        pass
+        tracebacks.append(traceback.format_exc())
 
 # -- If we could not find any supported qt version we
 # -- raise an exception
 if not _resolved:
+    for logged_traceback in tracebacks:
+        print(logged_traceback)
     raise Exception("Cannot import qutils into an environment where no supported PySide version is available")
