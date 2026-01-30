@@ -5,7 +5,7 @@ with open('README.md', 'r') as fh:
 
 setuptools.setup(
     name='qtility',
-    version='1.0.7',
+    version='1.0.8',
     author='Mike Malinowski',
     author_email='mike.malinowski@outlook.com',
     description='Support functions for working with PySide2/PySide6',
